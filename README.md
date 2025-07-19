@@ -5,7 +5,7 @@ A template to turn **GitHub Copilot** into a goal-oriented, memory-persistent co
 Use this setup to guide Copilot from **spec → design → tasks → tested code** while maintaining project context across sessions.
 
 📝 Read the full Medium article:  
-**[Beyond Autocomplete: Give Copilot a Memory and a Brain](https://medium.com/@your-handle/beyond-autocomplete-kiro-lite-memory-bank-copilot-template)**
+**[Beyond Autocomplete: Give Copilot a Memory and a Brain](https://medium.com/@mrBallistic/how-to-give-github-copilot-a-photographic-memory-and-a-kiro-style-brain-3eafeafa4b85)**
 
 ---
 
