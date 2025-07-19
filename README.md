@@ -71,6 +71,7 @@ Copilot only acts when triggered with these:
 
 /implement AUTH-1
 # Copilot generates file diff + tests
+```
 
 ## 🧪 Want to extend it?
 
