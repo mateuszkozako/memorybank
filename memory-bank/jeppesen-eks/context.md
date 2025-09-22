@@ -1,4 +1,17 @@
-# EKS Module Context
+# Context - jeppesen-eks
+
+## Repository Information
+- **Location**: `/home/hypeit/platform/jeppesen-eks`
+- **Type**: Terraform EKS Module
+- **Current Status**: v5.6.0 Release Preparation
+- **Current Branch**: `fix/modules_version`
+
+## Recent Activity
+- Enhanced variable descriptions for os_image and node_image_id
+- Added Bottlerocket OS support
+- Removed deprecated Kyverno variables
+- Updated documentation for v5.6.0 release
+- 10 commits focused on stability and documentation
 
 ## Module Architecture Deep Dive
 
@@ -177,3 +190,10 @@ Each AWS integration gets dedicated IRSA:
 - **Security groups**: Minimal required access
 - **Istio mTLS**: Service-to-service encryption
 - **Authorization policies**: CCID-based access control
+
+## Dependencies & Integrations
+- **AWS EKS Service**: Core dependency
+- **Integration Test Module**: For automated testing
+- **Platform GitOps**: Deployment automation
+- **Shared Pipeline Templates**: CI/CD integration
+- **DAS Platform Standards**: Compliance and security
