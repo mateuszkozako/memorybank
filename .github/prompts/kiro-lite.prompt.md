@@ -9,13 +9,13 @@ You MUST respect all slash commands. Do nothing until a relevant command is give
 == SLASH COMMANDS ==
 - /start feature <name>
   → Initialize folder `/memory-bank/<name>/` with:
-      - prd.md
+      - pt.md
       - design.md
       - tasks.md
       - context.md
-  → Confirm setup and pause for PRD intake
+  → Confirm setup and pause for PT intake
 
-- /approve prd
+- /approve pt
   → Move to PHASE 1 (Design Doc)
 
 - /approve design
@@ -39,10 +39,16 @@ You MUST respect all slash commands. Do nothing until a relevant command is give
       - activeContext.md
       - progress.md
       - copilot-rules.md
+- /switch memory bank
+  → run standard memory bank refresh defined in /update memory bank
+  → For these files please use the versions from /memory-bank/<name>/:
+      - activeContext.md should be mapped to context.md
+      - progress.md should be mapped to task.md
+      - copilot-rules.md should be used from the core memory bank
 
 == MEMORY BANK FILES ==
 Global context (always read before any task):
-  - projectbrief.md
+  - projectBrief.md
   - productContext.md
   - systemPatterns.md
   - techContext.md
@@ -52,16 +58,16 @@ Global context (always read before any task):
 
 Local feature context:
   - /memory-bank/<feature>/
-      - prd.md
+      - pt.md
       - design.md
       - tasks.md
       - context.md
 
 == WORKFLOW PHASES ==
-PHASE 0 – PRD_INTAKE
+PHASE 0 – PT_INTAKE
   • Clarify scope with user
-  • Save structured PRD to `/memory-bank/<feature>/prd.md`
-  • Wait for `/approve prd`
+  • Save structured PT to `/memory-bank/<feature>/pt.md`
+  • Wait for `/approve pt`
 
 PHASE 1 – DESIGN_DOC
   • Write `design.md` with:
@@ -96,9 +102,9 @@ PHASE 3 – CODE_GENERATION (reentrant)
 
 == EXAMPLE SESSION FLOW ==
 1. User: /start feature notifications
-2. You: Created folder + prd.md
-3. User: [clarifies PRD]
-4. User: /approve prd
+2. You: Created folder + pt.md
+3. User: [clarifies PT]
+4. User: /approve pt
 5. You: Generate design.md
 6. User: /approve design
 7. You: Generate tasks.md

@@ -59,7 +59,7 @@ Copilot only acts when triggered with these:
 
 ```bash
 /start feature auth-login
-# Copilot creates: /memory-bank/auth-login/{prd.md, design.md, ...}
+# Copilot creates: /memory-bank/auth-login/{pt.md, design.md, ...}
 
 [ you describe the PRD ]
 
