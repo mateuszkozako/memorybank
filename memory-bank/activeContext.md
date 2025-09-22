@@ -1,49 +1,68 @@
 # Active Context
 
-## Current Session: EKS v5.6.0 Release Preparation & Terraform Validation
+## Current Session Overview
+**Date**: September 22, 2025
+**Focus**: DAS Platform Infrastructure - Memory bank update with latest OCM client commits from 17.09.2025
 
-### 🎯 **Primary Objectives Completed:**
-1. ✅ Enhanced EKS module documentation (README & variable descriptions)
-2. ✅ Fixed all Terraform validation errors (duplicate definitions)
-3. ✅ Generated v5.6.0 release notes
-4. ✅ Istio module cleanup (removed PDB settings, commented autoscaleMin)
+## Primary Objective
+Following Kiro-Lite `/update memory bank` command to:
+1. ✅ Review and refresh all core memory files
+2. 🔄 Integrate latest OCM client commits from 17.09.2025
+3. ✅ Maintain structured workflow phases for ongoing development
 
-### 📋 **Key Accomplishments:**
+## Latest OCM Client Updates (17.09.2025)
 
-#### **Documentation Enhancements:**
-- **Enhanced `node_image_id` variable**: Comprehensive AMI sourcing instructions, security warnings, architecture compatibility
-- **Enhanced `os_image` variable**: Detailed AL2 vs BOTTLEROCKET comparison, automatic architecture detection
-- **Updated README**: Improved optional variables section with cross-references to documentation sections
-- **v5.6.0 Release Notes**: Comprehensive but concise coverage of EKS v19→v20 upgrade and AMI improvements
+### Recent Commits Summary
+**10 commits made on 17.09.2025** focusing on testing and deployment improvements:
 
-#### **Terraform Validation Fixes:**
-- **Duplicate Variables**: Removed `kyverno_mutate_on_create_only` duplicate in modules/kyverno/variables.tf
-- **Duplicate Locals**: Removed duplicate `node_image_id`, `ami_type`, `os_image_platform` definitions
-- **Provider Issues**: Resolved GitLab provider configuration conflicts
-- **Validation Status**: ✅ `terraform validate` passes successfully
+1. **e7b41ed** - [tf-test] Guard plan against missing ECR image
+2. **d8429d2** - [tf-test] Share minimal payload log in onboarding  
+3. **999a81e** - [tf-test] Add artifact cleanup guidance
+4. **bb536ca** - [tf-test] Log minimal payload validation artifacts
+5. **6e21b87** - ignore update [tf-test]
+6. **4062462** - [tf-test] Pre-check existence; avoid retries on 4xx; force name=clientId in payload
+7. **ae2f794** - [tf-tests] Add 4xx diagnostics; set default timeout=30s in module
+8. **1f40e00** - [tf-tests] Add response headers and body length logging for 4xx diagnostics
+9. **dd22737** - fix: add development environment variables for OCM client deployment
+10. **4620a9e** - [tf-tests] Add request/response debug logging; align sample client inventory with template defaults
 
-#### **Infrastructure Changes:**
-- **EKS Module**: Upgraded from v19 to v20 with improved authentication and access management
-- **AMI Management**: Enhanced architecture detection (x86_64/ARM64) based on instance type
-- **Bottlerocket Support**: Added comprehensive OS selection with `os_image` variable
-- **Component Updates**: Karpenter v1.5.1, Load Balancer Controller v1.13.3, OpenTofu Controller v1.9.8
+### Key Improvements
+- **Enhanced Testing**: Better diagnostics for 4xx responses, debug logging
+- **Error Handling**: Pre-existence checks, retry logic improvements
+- **Deployment**: Development environment variable support
+- **Monitoring**: Minimal payload logging and validation artifacts
 
-#### **Latest Action:**
-- **Istio Module Cleanup**: Removed Pod Disruption Budget settings and commented out `pilot.autoscaleMin` configuration
+## Session Progress
 
-### 🗂 **Current Working Context:**
-- **Repository**: `/home/hypeit/platform/jeppesen-eks`
-- **Branch**: `fix/modules_version`
-- **Status**: All Terraform validation errors resolved, documentation enhanced
-- **Next Steps**: Ready for testing and potential release
+### Completed ✅
+- **Memory Bank Structure**: Established complete `/memory-bank/` system with global and feature-specific contexts
+- **Feature Initialization**: Successfully created 5 feature directories with comprehensive documentation
+- **EKS Context Migration**: Moved detailed technical context to appropriate feature folder
+- **OCM Client Updates**: Integrated latest commits from 17.09.2025 into context
 
-### 🔧 **Technical Status:**
-- **Terraform Init**: ✅ Completed successfully
-- **Terraform Validate**: ✅ "Success! The configuration is valid."
-- **Module Dependencies**: ✅ All modules properly initialized
-- **Documentation**: ✅ Enhanced and comprehensive
+### Current Status 🔄
+- **Active Repository**: Working in memorybank repo on `jepp` branch
+- **Ready Features**: All 5 features initialized and ready for development
+- **Updated Context**: OCM client context refreshed with latest commits
 
-### 📝 **Session Notes:**
-This session involved comprehensive infrastructure documentation enhancement and technical debt resolution. All duplicate definitions were systematically identified and resolved while preserving the most comprehensive logic. The v5.6.0 release represents a significant upgrade with improved AMI management and EKS authentication.ctive Context
+## Key Technical Context
 
-_Current focus, decisions, and work in progress._
+### OCM Client (OAuth Client Management) - UPDATED
+- **Latest Status**: 10 commits on 17.09.2025 focused on testing robustness
+- **Recent Improvements**: Enhanced error diagnostics, deployment variables, debug logging
+- **Status**: Production-ready pipeline with improved testing and monitoring
+- **Architecture**: AWS Lambda + PingFederate API integration with enhanced observability
+
+### Jeppesen-EKS Module  
+- **Version**: v5.6.0 release preparation
+- **Architecture**: Comprehensive EKS module with 20+ optional components and detailed technical documentation
+
+### Platform Infrastructure
+- **GitOps Workflow**: Terraform + Flux CD for infrastructure management
+- **Testing**: Integration test framework with automated validation
+- **Security**: IRSA, mTLS, CCID-based authorization
+
+## Immediate Next Actions
+1. Choose specific feature for active development
+2. Use `/switch memory bank <feature-name>` to focus on specific repository  
+3. Follow Kiro-Lite phases: PT → Design → Tasks → Implementation
