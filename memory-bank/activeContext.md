@@ -2,55 +2,31 @@
 
 ## Current Session Overview
 **Date**: September 24, 2025
-**Focus**: OCM client Lambda list-clients enablement, Terraform redeploy, and inventory validation
+**Focus**:
+- Cline conversation history discovery and export tooling
+- OCM client Lambda list-clients enablement follow-up
 
-## Primary Objective
-Execute `/update memory bank` by capturing the latest Lambda functionality changes and deployment status:
-1. ✅ Record handler updates that add `operation = "list_clients"`
-2. ✅ Note Terraform redeploy of `ocm-client-test` using digest `sha256:2b5433e3a149d9156be840f34faad753eb31d1f1883fb0d0f4a4c5b0e0103fe7`
-3. ✅ Preserve live client inventory snapshot taken September 24, 2025
+## Workstream Highlights
 
-## Latest OCM Client Updates (September 24, 2025)
+### Cline Conversation History (September 24, 2025)
+- Implemented `scripts/export_cline_history.py` to bundle each task directory into sanitized JSON archives; redacts message text by default with optional `--include-content` flag.
+- Verified exporter against `~/Library/Application Support/Cursor/User/globalStorage/saoudrizwan.claude-dev`, producing redacted outputs in `./cline_history_export_test/`.
+- Generated concise summaries for all task archives (CLH-5) including API/UI turn counts, context trimming traces, time spans (UTC), and aggregate storage footprint.
 
-### Code Changes
-- Added `operation` dispatcher in `src/lambda/handler.py` so `{"operation":"list_clients"}` returns the live client set without triggering create flow.
-- Introduced lazy Azure credential caching and `get_azure_secret` helper to avoid Secrets Manager calls at import time.
-- Expanded unit coverage (`src/lambda/test_handler.py`) with `test_handler_operation_list_clients`; full suite passes via `.venv/bin/python -m pytest src/lambda/test_handler.py`.
+### OCM Client Updates (September 24, 2025)
+- Lambda handler supports `operation="list_clients"`, with lazy Azure credential caching and expanded unit coverage (`test_handler_operation_list_clients`).
+- Terraform redeploy (dev) refreshed image digest to `sha256:2b5433e3a149d9156be840f34faad753eb31d1f1883fb0d0f4a4c5b0e0103fe7`; validation invoke returned 10 active clients.
+- Monitoring window underway before promoting to production; coordinating cleanup of legacy dev clients once stakeholders approve.
 
-### Deployment Activities
-- Ran `terraform init`/`terraform apply -auto-approve` in `ocm-client/src` with `AWS_PROFILE=digx-dev`, updating Lambda image to digest `sha256:2b5433e3a149d9156be840f34faad753eb31d1f1883fb0d0f4a4c5b0e0103fe7`.
-- Confirmed successful redeploy and invoked `ocm-client-test` Lambda with `list-clients.json`; response returned 10 active clients (subset: `aws-alb-ciamg-bioc-dev-01`, `aws-alb-ciamg-jmpx-dev-01`, `client-a`, `client-autotest-001`, `client-autotest-1758104069`).
+## Completed This Session ✅
+- CLH-1 .. CLH-5 delivered (inventory, analysis, reporting, export script, per-task summaries).
+- Documented conversation storage locations and provided sanitized export artifacts.
 
-## Session Progress
+## In Progress 🔄
+- Continue OCM client monitoring for 4xx noise prior to production rollout.
+- Plan for legacy dev OAuth client cleanup post-monitoring.
 
-### Completed ✅
-- Lambda handler supports list-clients operation and passes unit tests.
-- Terraform redeploy completed in `digx-dev`, Lambda now serving updated container image.
-- Live client inventory captured post-deploy; confirms handler returns data instead of create errors.
-
-### Current Status 🔄
-- Preparing to monitor CloudWatch logs for lingering 4xx noise under list-clients flow.
-- Planning production promotion once dev telemetry remains clean.
-- Coordinating with app teams before cleaning historic test clients (`client-a`, legacy autotest IDs).
-
-## Key Technical Context
-
-### OCM Client (OAuth Client Management) - UPDATED
-- **Latest Status**: Lambda redeployed September 24, 2025 with list-clients support and passing unit tests.
-- **Recent Improvements**: Operation dispatcher, lazy credential caching, and validated client inventory invoke.
-- **Status**: Dev environment verified; production rollout pending monitoring window.
-- **Architecture**: AWS Lambda (container image) + PingFederate API with Secrets Manager credential retrieval.
-
-### Jeppesen-EKS Module  
-- **Version**: v5.6.0 release preparation
-- **Architecture**: Comprehensive EKS module with 20+ optional components and detailed technical documentation
-
-### Platform Infrastructure
-- **GitOps Workflow**: Terraform + Flux CD for infrastructure management
-- **Testing**: Integration test framework with automated validation
-- **Security**: IRSA, mTLS, CCID-based authorization
-
-## Immediate Next Actions
-1. Monitor CloudWatch logs for `ocm-client-test` to ensure list-clients invocations stay error-free.
-2. Coordinate cleanup of legacy dev clients (`client-a`, timestamped autotest entries) once stakeholders approve.
-3. Prepare production `ocm-client` redeploy (update image digest, run targeted validation invoke) after dev soak period.
+## Next Actions
+1. Track CloudWatch metrics for `ocm-client-test`; schedule production redeploy pending clean telemetry.
+2. Decide on retention policy/location for generated Cline transcript archives.
+3. Coordinate removal of stale dev clients once stakeholders confirm.

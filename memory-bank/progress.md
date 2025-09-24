@@ -1,5 +1,10 @@
 # Progress
 
+## ✅ **Cline Conversation History Discovery (September 24, 2025)**
+- ✅ **CLH-1 / CLH-2 / CLH-3**: Directory inventory, candidate analysis, and report delivered—identified `tasks/<id>/` JSON bundles plus `state/taskHistory.json` as primary conversation stores.
+- ✅ **CLH-4**: Added exporter `scripts/export_cline_history.py`; produces redacted archives by default and supports `--include-content` for full transcripts. Sample output captured under `./cline_history_export_test/`.
+- ✅ **CLH-5**: Generated concise per-task summaries (UTC windows, API/UI turn counts, files-in-context tallies, archive size, context-trimming presence) for all current task folders.
+
 ## ✅ **Latest Updates - September 24, 2025**
 
 ### **OCM Client Lambda - List Clients Support (24.09.2025) - COMPLETED**
@@ -29,7 +34,7 @@
   - Smart retry logic prevents unnecessary API calls
   - Comprehensive diagnostics for production debugging
 
-## ✅ **Completed This Session (September 22, 2025)**
+## ✅ **Completed Earlier This Session (September 22, 2025)**
 
 ### **EKS v5.6.0 Release Preparation - COMPLETED**
 - ✅ **Terraform Validation**: Fixed all duplicate definition errors
@@ -65,7 +70,7 @@
 
 ### **Previous Sprint Achievements**
 - ✅ **Bottlerocket OS Support**: Added support for `os_image = "BOTTLEROCKET"` variable
-- ✅ **Node Image Documentation**: Enhanced README with comprehensive AMI selection guidance  
+- ✅ **Node Image Documentation**: Enhanced README with comprehensive AMI selection guidance
 - ✅ **Variable Cleanup**: Removed deprecated Kyverno variables
 - ✅ **Architecture Documentation**: Updated variable descriptions for clarity
 - ✅ **Breaking Changes Documentation**: Documented v5.6.0 breaking changes
@@ -77,66 +82,29 @@
 - ✅ **Pipeline Dependencies**: Fixed optional job dependencies with `needs:optional`
 - ✅ **Parameter Addition**: Added `restrictToDefaultAccessTokenManager: true` to handler payload
 
-## 🎯 **Current Status: EKS v5.6.0 READY FOR DEPLOYMENT VALIDATION**
-
-### **Release Validation Checklist**
-- ✅ **Terraform Validation**: All configuration files valid
-- ✅ **Variable Documentation**: Comprehensive descriptions with security guidance
-- ✅ **KMS Configuration**: New key creation configured, pending deletion issue resolved
-- ✅ **Component Updates**: All dependencies updated to latest stable versions
-- ✅ **Breaking Changes**: Fully documented with migration guidance
-- ✅ **Code Quality**: All duplicate definitions and validation errors resolved
-
-### **Next Priorities**
-
-#### **Immediate (Next 24-48 hours)**
-1. **Monitor Lambda Logs**: Track `ocm-client-test` list-clients invocations for unexpected 4xx/5xx responses and ensure credential caching behaves under load.
-2. **Client Inventory Cleanup Plan**: Align with stakeholders on removing legacy dev clients (`client-a`, historic autotest IDs) now that list tooling exists.
-3. **EKS Validation Follow-Up**: Continue v5.6.0 deployment testing with updated KMS flow (carry-over from prior sprint).
-
-#### **Short Term (Next Week)**
-1. **Production Lambda Rollout**: Promote list-clients handler change to production account after dev soak and sign-off.
-2. **Documentation Updates**: Add list-clients invoke steps to OCM client runbooks and onboarding guides.
-3. **EKS Release Activities**: Finish remaining Karpenter/LBC/OpenTofu validation and prep production rollout per v5.6.0 plan.
+## 🎯 **Current Status**
+- EKS v5.6.0 remains ready for deployment validation.
+- OCM list-clients change soaking in dev; monitoring continues.
+- Cline conversation archives now exportable and summarized; awaiting retention decision.
 
 ## 📝 **Key Lessons Learned**
+- Pending deletion KMS keys can silently block EKS deployments—explicit key creation and shorter deletion windows mitigate the risk.
+- Sanitized export tooling allows sharing conversation analytics without leaking raw prompt content.
 
-### **KMS Key Management**
-- **Issue**: Pending deletion KMS keys block EKS deployments even when creating new keys
-- **Solution**: Explicit `create_kms_key = true` with proper policy configuration
-- **Best Practice**: Always set shorter deletion windows (`7 days`) for development environments
-
-### **Release Management**
-- **Documentation**: Comprehensive variable descriptions critical for user adoption
-- **Validation**: Systematic terraform validation prevents deployment issues
-- **Testing**: End-to-end validation essential before production deployment
-
-**Last Updated**: Current Session | **Status**: Ready for Deployment Validation
-2. **Release**: Prepare for v5.6.0 production deployment
-3. **Pipeline Validation**: Test updated ocm-client CI/CD with new variable structure
-
-### **Short Term (This Week)**
-1. **Production OCM Client Deployment**
-2. **EKS Module Integration Testing**
-3. **Documentation Updates for Platform Teams**
-
-### **Medium Term (Next Sprint)**
-1. **EKS + OCM Integration Testing**
-2. **Performance Optimization**
-3. **Additional Module Enhancements**
+**Last Updated**: September 24, 2025 | **Status**: Multi-workstream (OCM + Cline) on track
 
 ## 📊 **Session Metrics**
 - **Duration**: ~4 hours
-- **Files Modified**: 8+ files across terraform configuration and documentation
+- **Files Modified**: 8+ terraform/docs historically; +1 utility script for Cline exports; memory bank refreshed
 - **Validation Status**: ✅ All checks passing
-- **Documentation Quality**: Significantly enhanced
-- **Technical Debt**: Reduced through systematic cleanup
+- **Documentation Quality**: Comprehensive and current
+- **Technical Debt**: Reduced via tooling + documentation
 
 ## 🚫 **Current Blockers**
-- None identified - all work streams completed successfully
+- None identified
 
-## � **Session Impact Assessment**
-- **High Impact**: Release readiness achieved for v5.6.0
-- **Quality Improvement**: All validation errors resolved
-- **Documentation Excellence**: Comprehensive user guidance provided
-- **Technical Foundation**: Solid base for future enhancements
+## 💡 **Session Impact Assessment**
+- **High Impact**: Release readiness maintained; Cline archives manageable without exposing raw text
+- **Quality Improvement**: Automation reduces manual transcript handling risk
+- **Documentation Excellence**: Up-to-date memory bank and export instructions ensure continuity
+- **Technical Foundation**: Tooling + analysis provide strong base for future conversation management tasks
