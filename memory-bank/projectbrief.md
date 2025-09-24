@@ -1,28 +1,24 @@
 # Project Brief
 
-## Overview
-DAS Platform Infrastructure is a comprehensive cloud infrastructure platform that provides production-ready Kubernetes clusters and supporting services for enterprise applications.
+## Current Sprint: EKS Module Enhancement & OAuth Integration
 
-## Core Goals
-- **Standardized EKS Clusters**: Deploy consistent, production-ready Kubernetes environments with 20+ optional components
-- **OAuth Client Management**: Secure client credential management via Azure Functions + AWS Secrets Manager
-- **GitOps Automation**: Infrastructure provisioning through FluxCD + Terraform patterns
-- **Compliance & Security**: Enterprise-grade security controls and audit capabilities
+### Primary Goals
+1. **Enhance EKS Module Flexibility**: Complete jeppesen-eks v5.6.0 with Bottlerocket OS support and improved node image management
+2. **Stabilize OCM Client Pipeline**: Ensure reliable CI/CD for OAuth client management across environments
+3. **Improve Developer Experience**: Provide comprehensive documentation and automated deployment capabilities
 
-## Project Scope
-### In Scope
-- EKS cluster provisioning with modular components (Istio, ADOT, Karpenter, etc.)
-- OAuth client lifecycle management (OCM Client)
-- Automated testing infrastructure for infrastructure validation
-- Cross-cloud integration (AWS + Azure) for authentication
+### Key Deliverables
+- **jeppesen-eks v5.6.0**: Production-ready EKS module with multiple OS support
+- **OCM Client Automation**: Fully automated OAuth client lifecycle management
+- **Integration Documentation**: Clear guidance for platform teams on EKS + OAuth integration
 
-### Out of Scope
-- Application deployment (handled by ArgoCD post-cluster creation)
-- Custom application code (platform provides infrastructure only)
-- Manual infrastructure management (everything through GitOps)
+### Success Criteria
+- All pipeline tests pass consistently
+- Documentation enables self-service deployment
+- Zero manual intervention required for standard deployments
+- Backward compatibility maintained for existing clusters
 
-## Success Criteria
-- Teams can deploy production EKS clusters via YAML manifests
-- Zero-touch infrastructure provisioning through git commits
-- Automated testing validates all infrastructure changes
-- OAuth clients managed securely without manual credential handling
+### Timeline
+- **Week 1**: Complete jeppesen-eks documentation and testing
+- **Week 2**: Validate ocm-client pipeline in production
+- **Week 3**: Integration testing and documentation updates
