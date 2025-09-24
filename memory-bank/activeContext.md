@@ -1,57 +1,45 @@
 # Active Context
 
 ## Current Session Overview
-**Date**: September 22, 2025
-**Focus**: DAS Platform Infrastructure - Memory bank update with latest OCM client commits from 17.09.2025
+**Date**: September 24, 2025
+**Focus**: OCM client Lambda list-clients enablement, Terraform redeploy, and inventory validation
 
 ## Primary Objective
-Following Kiro-Lite `/update memory bank` command to:
-1. ✅ Review and refresh all core memory files
-2. 🔄 Integrate latest OCM client commits from 17.09.2025
-3. ✅ Maintain structured workflow phases for ongoing development
+Execute `/update memory bank` by capturing the latest Lambda functionality changes and deployment status:
+1. ✅ Record handler updates that add `operation = "list_clients"`
+2. ✅ Note Terraform redeploy of `ocm-client-test` using digest `sha256:2b5433e3a149d9156be840f34faad753eb31d1f1883fb0d0f4a4c5b0e0103fe7`
+3. ✅ Preserve live client inventory snapshot taken September 24, 2025
 
-## Latest OCM Client Updates (17.09.2025)
+## Latest OCM Client Updates (September 24, 2025)
 
-### Recent Commits Summary
-**10 commits made on 17.09.2025** focusing on testing and deployment improvements:
+### Code Changes
+- Added `operation` dispatcher in `src/lambda/handler.py` so `{"operation":"list_clients"}` returns the live client set without triggering create flow.
+- Introduced lazy Azure credential caching and `get_azure_secret` helper to avoid Secrets Manager calls at import time.
+- Expanded unit coverage (`src/lambda/test_handler.py`) with `test_handler_operation_list_clients`; full suite passes via `.venv/bin/python -m pytest src/lambda/test_handler.py`.
 
-1. **e7b41ed** - [tf-test] Guard plan against missing ECR image
-2. **d8429d2** - [tf-test] Share minimal payload log in onboarding  
-3. **999a81e** - [tf-test] Add artifact cleanup guidance
-4. **bb536ca** - [tf-test] Log minimal payload validation artifacts
-5. **6e21b87** - ignore update [tf-test]
-6. **4062462** - [tf-test] Pre-check existence; avoid retries on 4xx; force name=clientId in payload
-7. **ae2f794** - [tf-tests] Add 4xx diagnostics; set default timeout=30s in module
-8. **1f40e00** - [tf-tests] Add response headers and body length logging for 4xx diagnostics
-9. **dd22737** - fix: add development environment variables for OCM client deployment
-10. **4620a9e** - [tf-tests] Add request/response debug logging; align sample client inventory with template defaults
-
-### Key Improvements
-- **Enhanced Testing**: Better diagnostics for 4xx responses, debug logging
-- **Error Handling**: Pre-existence checks, retry logic improvements
-- **Deployment**: Development environment variable support
-- **Monitoring**: Minimal payload logging and validation artifacts
+### Deployment Activities
+- Ran `terraform init`/`terraform apply -auto-approve` in `ocm-client/src` with `AWS_PROFILE=digx-dev`, updating Lambda image to digest `sha256:2b5433e3a149d9156be840f34faad753eb31d1f1883fb0d0f4a4c5b0e0103fe7`.
+- Confirmed successful redeploy and invoked `ocm-client-test` Lambda with `list-clients.json`; response returned 10 active clients (subset: `aws-alb-ciamg-bioc-dev-01`, `aws-alb-ciamg-jmpx-dev-01`, `client-a`, `client-autotest-001`, `client-autotest-1758104069`).
 
 ## Session Progress
 
 ### Completed ✅
-- **Memory Bank Structure**: Established complete `/memory-bank/` system with global and feature-specific contexts
-- **Feature Initialization**: Successfully created 5 feature directories with comprehensive documentation
-- **EKS Context Migration**: Moved detailed technical context to appropriate feature folder
-- **OCM Client Updates**: Integrated latest commits from 17.09.2025 into context
+- Lambda handler supports list-clients operation and passes unit tests.
+- Terraform redeploy completed in `digx-dev`, Lambda now serving updated container image.
+- Live client inventory captured post-deploy; confirms handler returns data instead of create errors.
 
 ### Current Status 🔄
-- **Active Repository**: Working in memorybank repo on `jepp` branch
-- **Ready Features**: All 5 features initialized and ready for development
-- **Updated Context**: OCM client context refreshed with latest commits
+- Preparing to monitor CloudWatch logs for lingering 4xx noise under list-clients flow.
+- Planning production promotion once dev telemetry remains clean.
+- Coordinating with app teams before cleaning historic test clients (`client-a`, legacy autotest IDs).
 
 ## Key Technical Context
 
 ### OCM Client (OAuth Client Management) - UPDATED
-- **Latest Status**: 10 commits on 17.09.2025 focused on testing robustness
-- **Recent Improvements**: Enhanced error diagnostics, deployment variables, debug logging
-- **Status**: Production-ready pipeline with improved testing and monitoring
-- **Architecture**: AWS Lambda + PingFederate API integration with enhanced observability
+- **Latest Status**: Lambda redeployed September 24, 2025 with list-clients support and passing unit tests.
+- **Recent Improvements**: Operation dispatcher, lazy credential caching, and validated client inventory invoke.
+- **Status**: Dev environment verified; production rollout pending monitoring window.
+- **Architecture**: AWS Lambda (container image) + PingFederate API with Secrets Manager credential retrieval.
 
 ### Jeppesen-EKS Module  
 - **Version**: v5.6.0 release preparation
@@ -63,6 +51,6 @@ Following Kiro-Lite `/update memory bank` command to:
 - **Security**: IRSA, mTLS, CCID-based authorization
 
 ## Immediate Next Actions
-1. Choose specific feature for active development
-2. Use `/switch memory bank <feature-name>` to focus on specific repository  
-3. Follow Kiro-Lite phases: PT → Design → Tasks → Implementation
+1. Monitor CloudWatch logs for `ocm-client-test` to ensure list-clients invocations stay error-free.
+2. Coordinate cleanup of legacy dev clients (`client-a`, timestamped autotest entries) once stakeholders approve.
+3. Prepare production `ocm-client` redeploy (update image digest, run targeted validation invoke) after dev soak period.

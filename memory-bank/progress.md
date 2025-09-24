@@ -1,6 +1,14 @@
 # Progress
 
-## ✅ **Latest Updates - September 22, 2025**
+## ✅ **Latest Updates - September 24, 2025**
+
+### **OCM Client Lambda - List Clients Support (24.09.2025) - COMPLETED**
+- ✅ **Handler Enhancement**: Added `operation="list_clients"` dispatch, JSON string normalization, and lazy Azure credential caching with `get_azure_secret` helper.
+- ✅ **Unit Coverage**: Extended `src/lambda/test_handler.py` with list-clients test; `.venv/bin/python -m pytest src/lambda/test_handler.py` passes (17/17).
+- ✅ **Terraform Redeploy**: Ran `terraform apply -auto-approve` with `AWS_PROFILE=digx-dev`, updating Lambda image digest to `sha256:2b5433e3a149d9156be840f34faad753eb31d1f1883fb0d0f4a4c5b0e0103fe7`.
+- ✅ **Live Validation**: Invoked `ocm-client-test` with `list-clients.json`; captured 10-client inventory including `aws-alb-ciamg-bioc-dev-01`, `aws-alb-ciamg-jmpx-dev-01`, `client-a`, `client-autotest-001`, `client-autotest-1758104069`.
+
+## ✅ **Previous Updates - September 22, 2025**
 
 ### **OCM Client - Major Testing Enhancements (17.09.2025) - COMPLETED**
 - ✅ **Enhanced Error Diagnostics**: 10 commits focused on testing robustness
@@ -82,14 +90,14 @@
 ### **Next Priorities**
 
 #### **Immediate (Next 24-48 hours)**
-1. **Deployment Testing**: Validate successful EKS cluster creation with v5.6.0 and new KMS configuration
-2. **Performance Validation**: Monitor cluster creation time and resource utilization
-3. **Component Testing**: Verify Karpenter v1.5.1, Load Balancer Controller v1.13.3, OpenTofu Controller v1.9.8
+1. **Monitor Lambda Logs**: Track `ocm-client-test` list-clients invocations for unexpected 4xx/5xx responses and ensure credential caching behaves under load.
+2. **Client Inventory Cleanup Plan**: Align with stakeholders on removing legacy dev clients (`client-a`, historic autotest IDs) now that list tooling exists.
+3. **EKS Validation Follow-Up**: Continue v5.6.0 deployment testing with updated KMS flow (carry-over from prior sprint).
 
 #### **Short Term (Next Week)**
-1. **Production Deployment**: Deploy v5.6.0 to production environments after successful validation
-2. **User Documentation**: Publish updated AMI management and Bottlerocket guidance
-3. **Monitoring Setup**: Implement enhanced monitoring for new KMS key management
+1. **Production Lambda Rollout**: Promote list-clients handler change to production account after dev soak and sign-off.
+2. **Documentation Updates**: Add list-clients invoke steps to OCM client runbooks and onboarding guides.
+3. **EKS Release Activities**: Finish remaining Karpenter/LBC/OpenTofu validation and prep production rollout per v5.6.0 plan.
 
 ## 📝 **Key Lessons Learned**
 
