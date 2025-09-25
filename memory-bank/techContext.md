@@ -4,7 +4,7 @@
 
 ### Core Technologies
 - **Azure DevOps Pipelines**: CI/CD orchestration platform
-- **Java 24**: Application runtime (Eclipse Temurin)
+- **Java 25**: Application runtime (Eclipse Temurin) - **UPGRADED FROM JAVA 24**
 - **Gradle**: Build automation tool with wrapper (gradlew)
 - **Docker**: Containerization platform
 - **Azure Container Registry**: Docker image storage
@@ -50,7 +50,7 @@ ndevops-infrastructure/
 
 ### Platform Limitations
 - **Azure DevOps**: Limited to available pipeline templates and caching mechanisms
-- **Java 24**: Requires custom installation as not pre-installed on agents
+- **Java 25**: Requires custom installation as not pre-installed on agents (upgraded from Java 24)
 - **Gradle**: Must use wrapper for consistency across environments
 
 ### Performance Constraints
@@ -61,19 +61,19 @@ ndevops-infrastructure/
 ### Compatibility Requirements
 - **Template Versions**: Must use compatible template versions from ndevops-infrastructure
 - **Parameter Schemas**: Must match expected parameter types and formats
-- **Java Version**: Application requires Java 24 specifically
+- **Java Version**: Application requires Java 25 specifically (upgraded from Java 24)
 
 ## Dependencies
 
 ### External Dependencies
 - **ndevops-infrastructure**: Pipeline template repository
 - **Azure Container Registry**: Image storage and retrieval
-- **Eclipse Temurin**: Java 24 distribution source
+- **Eclipse Temurin**: Java 25 distribution source (upgraded from Java 24)
 - **Docker Hub**: Base container images
 
 ### Build Dependencies
 - **Gradle Dependencies**: Managed through build.gradle.kts
-- **Docker Base Images**: eclipse-temurin:24-jre-alpine
+- **Docker Base Images**: eclipse-temurin:25-jre-alpine (upgraded from Java 24)
 - **Test Dependencies**: CosmosDB emulator, Kafka, testcontainers
 
 ### Runtime Dependencies
@@ -105,9 +105,12 @@ restoreDockerCache: true
 
 ### Template Parameter Patterns
 ```yaml
-# tests-java-v24.yaml Parameters
+# tests-java-v24.yaml Parameters (Java 25 Configuration)
 parameters:
-  gradleTasks: 'clean build'                    # Gradle command tasks
+  containerImage: 'eclipse-temurin:25'         # Java 25 container image
+  jdkVersionOption: '1.25'                     # JDK version specification
+  javaVersion: '25.0.0+11'                     # Specific Java 25 version
+  gradleTasks: 'clean build'                   # Gradle command tasks
   gradleOptions: '-Xmx4096m'                   # JVM options
   options: '-Dorg.gradle.parallel=true...'     # Gradle system properties
   enableGradleBuild: true                      # Enable artifact building
@@ -124,10 +127,11 @@ parameters:
 ## Architecture Decisions
 
 ### Template Selection
-- **Decision**: Use `tests-java-v24.yaml` for both pipelines
-- **Rationale**: Provides comprehensive caching and Java 24 support
+- **Decision**: Use `tests-java-v24.yaml` for both pipelines with Java 25 parameters
+- **Rationale**: Provides comprehensive caching and flexible Java version support through parameters
 - **Alternative Considered**: `tests-java-v8.yaml` (limited caching)
 - **Trade-offs**: More complex configuration but significantly better performance
+- **Java 25 Implementation**: Template supports Java 25 via containerImage, jdkVersionOption, and javaVersion parameters
 
 ### Caching Architecture
 - **Decision**: Multi-layer caching (Gradle + Java + Docker + Artifacts)
@@ -167,5 +171,5 @@ parameters:
 - **Base Image Cache**: Common images cached and reused
 
 ---
-*Last Updated: September 24, 2025*
-*Technical Status: Optimized and validated*
+*Last Updated: September 25, 2025*
+*Technical Status: Java 25 upgraded and validated*

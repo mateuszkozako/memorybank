@@ -1,23 +1,29 @@
 # Progress
 
 ## What Works
-### Pipeline Optimizations (Completed September 24, 2025)
+### Java 25 Pipeline Upgrade (Latest Completion)
 
 **Main Branch Pipeline (`azure-pipelines-main.yml`):**
-- ✅ Uses `tests-java-v24.yaml` template with comprehensive caching
+- ✅ **UPGRADED TO JAVA 25:** `containerImage: 'eclipse-temurin:25'`, `jdkVersionOption: '1.25'`, `javaVersion: '25.0.0+11'`
+- ✅ Uses `tests-java-v24.yaml` template with comprehensive caching (Java 25 compatible)
 - ✅ Gradle task consistency: `gradleTasks: 'clean build'`
 - ✅ Proper JVM options: `gradleOptions: '-Xmx4096m'`
 - ✅ Docker cache restoration: `restoreDockerCache: true`
 - ✅ Artifact reuse: downloads build artifacts from test stage
 - ✅ Multi-environment deployment: Dev, QA, UAT in parallel
+- ✅ Trigger configuration: main branch only (`include: - main`)
 
 **Feature Branch Pipeline (`azure-pipelines.yml`):**
-- ✅ Uses `tests-java-v24.yaml` template with advanced caching
+- ✅ **UPGRADED TO JAVA 25:** `containerImage: 'eclipse-temurin:25'`, `jdkVersionOption: '1.25'`, `javaVersion: '25.0.0+11'`
+- ✅ Uses `tests-java-v24.yaml` template with advanced caching (Java 25 compatible)
 - ✅ Gradle task consistency: `gradleTasks: 'clean build'`
 - ✅ Proper JVM options: `gradleOptions: '-Xmx4096m'`
 - ✅ Docker cache restoration: `restoreDockerCache: true`
 - ✅ Artifact reuse: downloads build artifacts from test stage
 - ✅ Sequential deployment: Dev → QA → UAT
+- ✅ Trigger configuration: all branches except main (`exclude: - main`)
+
+### Pipeline Optimizations Foundation (Completed September 24, 2025)
 
 **Caching Implementation:**
 - ✅ Gradle cache with source version-based keys

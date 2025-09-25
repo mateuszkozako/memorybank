@@ -1,9 +1,31 @@
 # Active Context
 
 ## Current Work Focus
-**COMPLETED:** Terraform infrastructure alignment and data flow import for Store Locator ADF (Azure Data Factory) infrastructure in UAT and Production environments.
+**COMPLETED:** Java 25 upgrade for NFOS Mashgin Fueling Service pipelines and Terraform infrastructure alignment for Store Locator ADF.
 
 ## Recent Changes
+### Java 25 Pipeline Upgrade (Latest)
+
+**NFOS Mashgin Fueling Service Pipelines:**
+- **Main Branch Pipeline (`azure-pipelines-main.yml`):** Updated to use Java 25
+  - `containerImage: 'eclipse-temurin:25'`
+  - `jdkVersionOption: '1.25'`
+  - `javaVersion: '25.0.0+11'`
+  - Parallel deployment to dev/qa/uat environments
+  - Trigger: main branch only (`include: - main`)
+
+- **Feature Branch Pipeline (`azure-pipelines.yml`):** Updated to use Java 25
+  - `containerImage: 'eclipse-temurin:25'`
+  - `jdkVersionOption: '1.25'`
+  - `javaVersion: '25.0.0+11'`
+  - Sequential deployment dev → qa → uat
+  - Trigger: all branches except main (`exclude: - main`)
+
+**Template Compatibility:**
+- **tests-java-v24.yaml**: Confirmed parameterizable for Java 25 usage
+- **Java Version Parameters**: Successfully configured through template parameters
+- **Backward Compatibility**: Existing caching and optimization patterns maintained
+
 ### Terraform Infrastructure Alignment (September 25, 2025)
 
 **Store Locator ADF Infrastructure (`stoloc-infrastructure/terraform/us/adf/`):**
