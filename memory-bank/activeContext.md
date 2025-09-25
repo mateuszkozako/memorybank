@@ -1,16 +1,25 @@
 # Active Context
 
 ## Current Work Focus
-**COMPLETED:** Java 25 upgrade for NFOS Mashgin Fueling Service pipelines and Terraform infrastructure alignment for Store Locator ADF.
+**COMPLETED:** Java 25 upgrade for NFOS Mashgin Fueling Service pipelines with pipeline parameter validation fixes and template verification.
 
 ## Recent Changes
-### Java 25 Pipeline Upgrade (Latest)
+### Java 25 Pipeline Parameter Fixes (Latest - September 25, 2025)
+
+**Pipeline Validation Errors Resolved:**
+- **Missing Parameters Fixed:** Added required template parameters to both pipelines
+  - `enableTests: true`
+  - `repositoryName: 'nfos-service-mashgin-fueling'` 
+  - `options: '-Xmx4096m'`
+- **Template Verification:** Confirmed `tests-java-v24.yaml` fully supports Java 25
+- **Comprehensive Java 25 Support:** Template includes custom installation logic, caching, and environment configuration
 
 **NFOS Mashgin Fueling Service Pipelines:**
 - **Main Branch Pipeline (`azure-pipelines-main.yml`):** Updated to use Java 25
   - `containerImage: 'eclipse-temurin:25'`
   - `jdkVersionOption: '1.25'`
   - `javaVersion: '25.0.0+11'`
+  - **FIXED:** Added all required template parameters (`enableTests`, `repositoryName`, `options`)
   - Parallel deployment to dev/qa/uat environments
   - Trigger: main branch only (`include: - main`)
 
@@ -18,13 +27,20 @@
   - `containerImage: 'eclipse-temurin:25'`
   - `jdkVersionOption: '1.25'`
   - `javaVersion: '25.0.0+11'`
+  - **FIXED:** Added all required template parameters (`enableTests`, `repositoryName`, `options`)
   - Sequential deployment dev → qa → uat
   - Trigger: all branches except main (`exclude: - main`)
 
-**Template Compatibility:**
-- **tests-java-v24.yaml**: Confirmed parameterizable for Java 25 usage
+**Template Compatibility Verified:**
+- **tests-java-v24.yaml**: Confirmed full Java 25 support with comprehensive features
+  - Java 25 caching mechanism: `key: 'java25-$(Agent.OS)-openjdk25'`
+  - Custom installation logic with Eclipse Temurin download
+  - Environment variable configuration for Java 25
+  - Fallback installation methods
+  - All required parameters: `enableTests`, `repositoryName`, `options`
 - **Java Version Parameters**: Successfully configured through template parameters
 - **Backward Compatibility**: Existing caching and optimization patterns maintained
+- **Installation Logic**: Custom Java 25 installation from Eclipse Temurin with proper caching
 
 ### Terraform Infrastructure Alignment (September 25, 2025)
 
@@ -62,7 +78,10 @@
 - **Configuration:** Uses `script_lines` array format with lifecycle ignore for script changes
 
 ## Next Steps
-**Project Complete** - All infrastructure alignment objectives achieved:
+**All Projects Complete** - All objectives achieved:
+- ✅ Java 25 pipeline upgrade completed with parameter validation fixes
+- ✅ Template verification confirmed Java 25 full support
+- ✅ Both pipelines now have all required parameters and pass validation
 - ✅ UAT Terraform configuration matches existing infrastructure (no drift)
 - ✅ Production configuration updated for consistency
 - ✅ Data flow successfully imported and managed by Terraform
@@ -144,5 +163,5 @@
 
 ---
 *Last Updated: September 25, 2025*
-*Status: Terraform Infrastructure Alignment Complete*
-*Current Focus: Store Locator ADF infrastructure fully managed by Terraform*
+*Status: Java 25 Pipeline Parameter Fixes and Template Verification Complete*
+*Current Focus: All pipeline validation errors resolved, Java 25 template verified and working*
