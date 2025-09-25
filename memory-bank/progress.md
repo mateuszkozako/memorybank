@@ -1,18 +1,22 @@
 # Progress
 
-## ✅ **Jeppesen EKS Terraform Analysis (September 24, 2025) - COMPLETED**
-- ✅ **Error Detection**: Comprehensive Terraform validation revealed critical configuration gaps
-  - Missing required variables: `aws_account_id`, `cluster_name`, `default_tags`
-  - Undefined variable warning: `use_bottlerocket` (non-existent) vs `os_image` (correct)
-  - Planning failures due to incomplete variable configuration, not structural issues
-- ✅ **Bottlerocket Investigation**: Resolved variable naming confusion
-  - Historical `use_bottlerocket = true` (boolean) doesn't exist in variables.tf
-  - Correct approach: `os_image = "BOTTLEROCKET"` with validation for ["AL2", "BOTTLEROCKET"]
-  - Module auto-detects instance architecture and maps to appropriate AMI types
-- ✅ **Fix Recommendations**: Clear remediation path identified
-  - Add missing required variables to test terraform.tfvars
-  - Replace any `use_bottlerocket` references with `os_image = "BOTTLEROCKET"`
-  - Verified terraform syntax validation passes, only missing variable values cause failures
+## ✅ **Jeppesen EKS Bottlerocket & Coredump Enhancement (September 25, 2025) - COMPLETED**
+- ✅ **OS Image Default Handling**: Implemented `os_image = "default"` semantic for deterministic AL2 selection
+  - Added `local.resolved_os_image` mapping to avoid empty SSM parameter lookups
+  - Updated module inputs to use resolved values preventing validation errors
+  - Ensures launch template updates trigger correctly on AL2 revert scenarios
+- ✅ **Bottlerocket Coredump Support**: Complete EBS volume integration for core dump collection
+  - Added `core_volume_size` (30GB) and `core_volume_device_name` (xvdf) variables
+  - Automatic EBS volume attachment for Bottlerocket nodes via block_device_mappings
+  - Enhanced coredump-manager init container with device mounting and fallback logic
+- ✅ **Image Builder Scaffold**: Created complete EC2 Image Builder pipeline outside jeppesen-eks
+  - AWS CLI workflow with component upload and pipeline execution scripts
+  - Terraform example with IAM roles, components, recipes, and infrastructure configuration
+  - Bottlerocket-specific considerations and minimal helper script for first-boot volume setup
+- ✅ **Terraform Validation**: All configuration errors resolved
+  - Fixed SSM parameter data source counts using resolved_os_image
+  - Eliminated null value errors in module inputs (karpenter, coredump-manager)
+  - Confirmed terraform validate passes with no syntax or validation errors
 
 ## ✅ **Previous Updates - September 24, 2025**
 

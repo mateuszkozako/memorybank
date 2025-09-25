@@ -19,6 +19,7 @@
 - Backward compatibility maintained for existing clusters
 
 ### Timeline
-- **Week 1**: Complete jeppesen-eks documentation and testing
-- **Week 2**: Validate ocm-client pipeline in production
+- **Week 1**: ✅ Completed jeppesen-eks Bottlerocket support and coredump management
+- **Week 2**: Validate ocm-client pipeline in production  
 - **Week 3**: Integration testing and documentation updates
+- **Week 4**: Image Builder pipeline integration and testing

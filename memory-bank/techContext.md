@@ -2,7 +2,13 @@
 
 ## Core Technologies
 
-### Infrastructure as Code
+### Infr### Architecture Decisions
+
+### OS Selection & Image Builder
+- **AL2**: Traditional Linux with full tooling access
+- **BOTTLEROCKET**: Container-optimized, immutable OS with minimal attack surface
+- **Default**: Maps to AL2 but forces launch template updates for deterministic rollback behavior
+- **Custom AMIs**: EC2 Image Builder pipeline for layered OS modifications with component-based architecturecture as Code
 - **Terraform**: Primary IaC tool for AWS resource provisioning
 - **FluxCD**: GitOps operator for automated deployment via Terraform CRDs
 - **Kubernetes**: Container orchestration (EKS focus)

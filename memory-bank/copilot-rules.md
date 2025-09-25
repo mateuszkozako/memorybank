@@ -27,5 +27,13 @@
 - **Always Run Validation**: Execute `terraform validate` before any plan/apply operations
 - **Required Variables**: Ensure all non-default variables are defined in terraform.tfvars
 - **Variable Naming**: Use consistent, descriptive variable names - avoid deprecated patterns
-- **OS Configuration**: Use `os_image = "BOTTLEROCKET"` not legacy `use_bottlerocket = true`
+- **OS Configuration**: Use `os_image = "BOTTLEROCKET"` or `os_image = "default"` (maps to AL2)
+- **SSM Parameter Safety**: Use `local.resolved_os_image` to avoid indexing empty data source tuples
+- **Module Input Validation**: Pass resolved values to prevent null variable errors in submodules
 - **Test Configuration**: Validate test tfvars files have all required variables (aws_account_id, cluster_name, default_tags)
+
+## 🐳 Image Builder Best Practices  
+- **Bottlerocket Constraints**: Keep OS modifications minimal due to OSTree immutability
+- **Helper Scripts**: Place utilities in writable paths like `/opt` rather than modifying core OS
+- **Device Mounting**: Use privileged containers or first-boot scripts for EBS device formatting
+- **NVMe Considerations**: Account for device name mapping differences across instance types
