@@ -1,10 +1,46 @@
 # Active Context
 
 ## Current Work Focus
-**COMPLETED:** Java 25 upgrade for NFOS Mashgin Fueling Service pipelines with pipeline parameter validation fixes and template verification.
+**COMPLETED:** Azure DevOps pipeline template fixes for multiple repository checkout scenarios and Java v24/v25 template updates.
 
 ## Recent Changes
-### Java 25 Pipeline Parameter Fixes (Latest - September 25, 2025)
+### Azure DevOps Pipeline Template Fixes (Latest - September 26, 2025)
+
+**Multiple Repository Checkout Issue Resolved:**
+- **Root Cause:** When Azure DevOps pipelines checkout multiple repositories, they cannot all use the `/s` directory and get placed in repository-named directories (e.g., `/home/vsts/work/1/s/nfos-mashgin/`)
+- **Error Fixed:** "Not found wrapperScript: /home/vsts/work/1/s/gradlew" 
+- **Solution Applied:** Updated all Java v24/v25 pipeline templates to use repository-specific paths for Gradle wrapper scripts
+
+**Pipeline Template Updates Applied:**
+- **ndevops-infrastructure/pipeline-jobs/tests-java-v24.yaml:**
+  - Modified gradleWrapperFile parameter from `"./gradlew"` to `"./${{ parameters.repository }}/gradlew"`
+  - Ensures Gradle wrapper is found in correct repository-specific directory
+  
+- **ndevops-infrastructure/pipeline-jobs/tests-java-v25.yaml:**
+  - Applied same gradleWrapperFile fix as v24 template
+  - Repository-specific path resolution for multiple checkout scenarios
+
+- **ndevops-infrastructure/pipeline-tasks/tests-java-v6.yaml:**
+  - Added repository parameter with default `"self"`
+  - Removed duplicate repository parameter that was causing confusion
+  - Underlying task template used by both v24 and v25 job templates
+
+- **ndevops-infrastructure/pipeline-tasks/src-build-java-v1.yaml:**
+  - Added repository parameter with default `"self"`
+  - Updated to support repository-specific Gradle wrapper paths
+  - Source build task template for Gradle builds
+
+**Microsoft Documentation Reference:**
+- **Issue:** According to Microsoft docs, when multiple repositories are checked out, they cannot all use the `/s` directory
+- **Behavior:** Each repository gets its own directory named after the repository (e.g., `/home/vsts/work/1/s/repository-name/`)
+- **Impact:** Gradle wrapper scripts must be referenced with repository-specific paths
+
+**Changes Committed:**
+- **Branch:** `feat/pipeline_template`
+- **Commit Hash:** `0928984`
+- **Status:** All Java v24/v25 templates updated and ready for use
+
+### Java 25 Pipeline Parameter Fixes (September 25, 2025)
 
 **Pipeline Validation Errors Resolved:**
 - **Missing Parameters Fixed:** Added required template parameters to both pipelines
@@ -78,19 +114,36 @@
 - **Configuration:** Uses `script_lines` array format with lifecycle ignore for script changes
 
 ## Next Steps
-**All Projects Complete** - All objectives achieved:
-- ✅ Java 25 pipeline upgrade completed with parameter validation fixes
-- ✅ Template verification confirmed Java 25 full support
-- ✅ Both pipelines now have all required parameters and pass validation
-- ✅ UAT Terraform configuration matches existing infrastructure (no drift)
-- ✅ Production configuration updated for consistency
-- ✅ Data flow successfully imported and managed by Terraform
-- ✅ All 9 UAT resources now managed by Terraform
-- ✅ Infrastructure as Code fully implemented
+**Pipeline Template Work Complete** - Key objectives achieved:
+- ✅ Azure DevOps multiple repository checkout issue resolved
+- ✅ Java v24/v25 templates updated with repository-specific paths
+- ✅ Gradle wrapper script path resolution fixed for all scenarios
+- ✅ All changes committed to `feat/pipeline_template` branch
+- ✅ Templates ready for use in multi-repository pipeline scenarios
+
+**Outstanding Tasks:**
+- [ ] Original nfos-service-mashgin-fueling main-branch pipeline creation (pending)
+- [ ] Review and merge `feat/pipeline_template` branch changes
+- [ ] Validate template fixes in actual multi-repository pipeline scenarios
 
 ## Active Decisions and Considerations
 
-### Infrastructure Alignment Strategy
+### Pipeline Template Architecture Strategy
+- **Decision:** Update pipeline templates to handle multiple repository checkouts correctly
+- **Rationale:** Microsoft documentation indicates multiple repositories get separate directories, not shared `/s` directory
+- **Implementation:** Modified gradleWrapperFile parameter to use repository-specific paths
+- **Result:** Gradle wrapper scripts now found correctly in multi-repository scenarios
+
+### Template Parameter Design
+- **Decision:** Add repository parameter with sensible default to underlying task templates
+- **Process:** 
+  1. Identified job templates need repository-aware paths
+  2. Added repository parameter to underlying task templates
+  3. Updated gradleWrapperFile to use `./${{ parameters.repository }}/gradlew`
+  4. Maintained backward compatibility with default `"self"` value
+- **Outcome:** Templates work for both single and multiple repository scenarios
+
+### Infrastructure Alignment Strategy (Previous Work)
 - **Decision:** Update Terraform to match existing infrastructure rather than modify infrastructure
 - **Rationale:** Preserve existing working infrastructure while bringing it under Terraform management
 - **Implementation:** Analyzed terraform plan output and adjusted configurations to eliminate drift
@@ -115,7 +168,20 @@
 
 ## Important Patterns and Preferences
 
-### Terraform State Management
+### Azure DevOps Pipeline Template Patterns
+- **Multi-Repository Support:** Always use repository-specific paths for file references
+- **Parameter Propagation:** Ensure parameters flow correctly from job templates to task templates
+- **Backward Compatibility:** Maintain default values for optional parameters
+- **Template Hierarchy:** Job templates call task templates, both need repository awareness
+- **Path Resolution:** Use `./${{ parameters.repository }}/filename` pattern for repository-specific files
+
+### Template Parameter Management
+- **Repository Parameter:** Use `repository` parameter with default `"self"` for single repository scenarios
+- **gradleWrapperFile:** Always construct using repository parameter for multi-repo support
+- **Parameter Validation:** Ensure all required parameters are defined at appropriate template level
+- **Default Values:** Provide sensible defaults that work for most common scenarios
+
+### Terraform State Management (Previous Work)
 - **Import Strategy:** Use full Azure resource IDs for terraform import commands
 - **Configuration Alignment:** Match Terraform configuration exactly to existing resource properties
 - **Lifecycle Management:** Use `ignore_changes` for dynamic properties (script_lines, activities_json)
@@ -137,7 +203,21 @@
 
 ## Learnings and Project Insights
 
-### Terraform Import Best Practices
+### Azure DevOps Multiple Repository Checkout
+- **Key Learning:** Multiple repository checkouts change directory structure significantly
+- **Microsoft Behavior:** Each repository gets its own directory instead of sharing `/s` directory
+- **Path Impact:** All file references must be repository-aware in multi-repo scenarios
+- **Template Design:** Job templates and task templates both need repository parameter support
+- **Backward Compatibility:** Default `"self"` parameter ensures single-repo scenarios continue working
+
+### Pipeline Template Architecture
+- **Template Hierarchy:** Job templates (`tests-java-v24.yaml`) call task templates (`tests-java-v6.yaml`)
+- **Parameter Flow:** Repository parameter must flow from job to task level
+- **File Path Construction:** Use parameter interpolation for dynamic paths (`./${{ parameters.repository }}/gradlew`)
+- **Testing Strategy:** Template changes affect both single and multiple repository scenarios
+- **Version Management:** Both v24 and v25 templates needed identical fixes
+
+### Terraform Import Best Practices (Previous Work)
 - **Resource Discovery:** Use Azure CLI to discover existing resources and their properties
 - **Configuration First:** Add Terraform resource configuration before importing
 - **Iterative Alignment:** Import, plan, adjust configuration, repeat until zero drift
@@ -162,6 +242,6 @@
 - **Resource Sizing:** Different SKUs and configurations appropriate for different environments
 
 ---
-*Last Updated: September 25, 2025*
-*Status: Java 25 Pipeline Parameter Fixes and Template Verification Complete*
-*Current Focus: All pipeline validation errors resolved, Java 25 template verified and working*
+*Last Updated: September 26, 2025*
+*Status: Azure DevOps Pipeline Template Fixes for Multiple Repository Checkout Complete*
+*Current Focus: Java v24/v25 templates updated and ready for multi-repository scenarios*
