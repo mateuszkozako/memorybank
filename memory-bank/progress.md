@@ -52,29 +52,37 @@
 - ✅ **Dual Configuration Strategy:** Both Java versions available for different deployment strategies
 - ✅ **Template Consistency:** Both branches use consistent parameter patterns and configurations
 
-### Azure DevOps Pipeline Template Fixes (Completion - September 26, 2025)
+### Azure DevOps Pipeline Template Fixes (Latest Update - September 26, 2025)
 
-**Multiple Repository Checkout Issue Resolved:**
+**Repository Parameter and Working Directory Enhancement Completed:**
+- ✅ **Final Enhancement:** Added repository parameter passing and workingDirectory configuration for multi-repository scenarios
+- ✅ **Template Updates Completed:** All three critical template files enhanced for better multi-repo support
+- ✅ **Changes Committed and Pushed:** Commit hash `696d209` successfully pushed to remote repository
+
+**Latest Template Updates (September 26, 2025):**
+- ✅ **ndevops-infrastructure/pipeline-jobs/tests-java-v24.yaml:** Added `repository: ${{ parameters.repository }}` and `repositoryName: ${{ parameters.repositoryName }}` to src-build-java-v1.yaml template call
+- ✅ **ndevops-infrastructure/pipeline-jobs/tests-java-v25.yaml:** Added `repository: ${{ parameters.repository }}` and `repositoryName: ${{ parameters.repositoryName }}` to src-build-java-v1.yaml template call
+- ✅ **ndevops-infrastructure/pipeline-tasks/tests-java-v6.yaml:** Added `workingDirectory: $(Build.Repository.LocalPath)/${{ parameters.repositoryName }}` to Gradle@4 task for proper multi-repo path handling
+
+**Previous Template Fixes (September 26, 2025):**
 - ✅ **Root Cause Identified:** Multiple repository checkouts place each repo in separate directories (e.g., `/home/vsts/work/1/s/repository-name/`)
 - ✅ **Error Fixed:** "Not found wrapperScript: /home/vsts/work/1/s/gradlew" 
-- ✅ **Solution Implemented:** Updated all Java v24/v25 templates to use repository-specific paths
+- ✅ **gradleWrapperFile Fix:** Modified from `"./gradlew"` to `"./${{ parameters.repository }}/gradlew"`
+- ✅ **Repository Parameter Support:** Added to src-build-java-v1.yaml template
+- ✅ **Template Expression Syntax:** Fixed `${{parameters.replaceTokensEnv}}` → `${{ parameters.replaceTokensEnv }}`
 
-**Pipeline Template Updates Completed:**
-- ✅ **ndevops-infrastructure/pipeline-jobs/tests-java-v24.yaml:** Modified gradleWrapperFile from `"./gradlew"` to `"./${{ parameters.repository }}/gradlew"`
-- ✅ **ndevops-infrastructure/pipeline-jobs/tests-java-v25.yaml:** Applied same gradleWrapperFile fix as v24 template
-- ✅ **ndevops-infrastructure/pipeline-tasks/tests-java-v6.yaml:** Added repository parameter with default `"self"`, removed duplicate parameter
-- ✅ **ndevops-infrastructure/pipeline-tasks/src-build-java-v1.yaml:** Added repository parameter support for Gradle builds
+**Complete Template Architecture:**
+- ✅ **Parameter Flow:** Repository parameters properly cascade from job templates through task templates to Gradle execution
+- ✅ **Working Directory Configuration:** Gradle tasks now execute in correct repository-specific directories
+- ✅ **Backward Compatibility:** Default values ensure single-repo scenarios continue working seamlessly
+- ✅ **Multi-Repository Support:** Templates fully handle both single and multiple repository checkout scenarios
+- ✅ **Path Resolution:** Dynamic path construction with proper working directory configuration
 
-**Template Architecture Verified:**
-- ✅ **Parameter Flow:** Repository parameter properly flows from job templates to task templates
-- ✅ **Backward Compatibility:** Default `"self"` value ensures single-repo scenarios continue working
-- ✅ **Multi-Repository Support:** Templates now handle both single and multiple repository checkout scenarios
-- ✅ **Path Resolution:** Dynamic path construction using `./${{ parameters.repository }}/gradlew` pattern
-
-**Changes Successfully Committed:**
+**Final Commit Details:**
 - ✅ **Branch:** `feat/pipeline_template`
-- ✅ **Commit Hash:** `0928984`
-- ✅ **Status:** All Java v24/v25 templates updated and ready for production use
+- ✅ **Latest Commit Hash:** `696d209` (September 26, 2025)
+- ✅ **Previous Commit Hash:** `0928984` (September 26, 2025)
+- ✅ **Status:** All Java v24/v25 templates updated with complete multi-repository support and ready for production use
 
 ### Java 25 Pipeline Parameter Fixes (Completion - September 25, 2025)
 
